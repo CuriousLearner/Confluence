@@ -1,3 +1,4 @@
+from __future__ import absolute_import, unicode_literals
 """
 Django settings for confluence project.
 
@@ -12,6 +13,22 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 import environ
+
+# ^^^ The above is required if you want to import from the celery
+# library.  If you don't have this then `from celery.schedules import`
+# becomes `proj.celery.schedules` in Python 2.x since it allows
+# for relative imports by default.
+
+# Celery settings
+
+CELERY_BROKER_URL = 'amqp://guest:guest@localhost//'
+
+#: Only add pickle to this list if your broker is secured
+#: from unwanted access (see userguide/security.html)
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_TASK_SERIALIZER = 'json'
+
 
 root = environ.Path(__file__) - 3 # three folder back (/a/b/c/ - 3 = /)
 env = environ.Env(DEBUG=(bool, False),) # set default values and casting
@@ -33,6 +50,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('SECRET_KEY')
 
+# FACEBOOK PAGE ACCESS TOKEN
+FACEBOOK_PAGE_ACCESS_TOKEN = env('FACEBOOK_PAGE_ACCESS_TOKEN')
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG', default=True)
 
@@ -49,10 +69,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'django_celery_results',
     'registration',
     'colloquium',
     'mails',
-    'social_media'
+    'social_media',
 ]
 
 MIDDLEWARE_CLASSES = [

@@ -4,9 +4,9 @@ from celery import shared_task
 import facebook
 
 
-@shared_task
+@shared_task(name='POST_TO_FACEBOOK')
 #message=input("Please enter the message to be displayed: ")
-def post_to_fb_page(message_entered,link):
+def post_to_fb_page(message,link):
     graph = facebook.GraphAPI(access_token='EAAHZCnvXOZClgBAK7Llvam8SPZBPlrR8fffDmdeCBmmttUr09ZAep7NEOEh33ZC30UiQNEGUy5QZCDFi741TozPxMttZBtgmsnZAEzk364LU6co1BFN5vQbeAZBU262k7lz5CHbsMHVkAuFZC0HKSkbGB3GJgXdy5EX3giyZBUxAvR8MgZDZD')
     #message_entered=input("Please enter the message to be displayed: ")
     attachment =  {
@@ -16,5 +16,5 @@ def post_to_fb_page(message_entered,link):
     #'description': 'desc',
     'picture': link  #must be same as link
     }
-    graph.put_wall_post(message=message_entered, attachment=attachment)
+    graph.put_wall_post(message=message, attachment=attachment)
     return 'posted'

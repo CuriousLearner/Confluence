@@ -5,12 +5,12 @@ from confluence.settings import FACEBOOK_PAGE_ACCESS_TOKEN
 import facebook
 
 
-@shared_task(name='POST_TO_FACEBOOK')
+@shared_task(name='social_media.tasks.post_to_fb_page')
 
 def post_to_fb_page(message,link):
     graph = facebook.GraphAPI(access_token=FACEBOOK_PAGE_ACCESS_TOKEN)
     attachment =  {
-    'link': link,   #must be same as picture
-    'picture': link  #must be same as link
+        'link': link,   #must be same as picture
+        'picture': link  #must be same as link
     }
     graph.put_wall_post(message=message, attachment=attachment)

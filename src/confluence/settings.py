@@ -14,13 +14,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 import os
 import environ
 
-# ^^^ The above is required if you want to import from the celery
-# library.  If you don't have this then `from celery.schedules import`
-# becomes `proj.celery.schedules` in Python 2.x since it allows
-# for relative imports by default.
-
 # Celery settings
-
 CELERY_BROKER_URL = 'amqp://guest:guest@localhost//'
 
 #: Only add pickle to this list if your broker is secured

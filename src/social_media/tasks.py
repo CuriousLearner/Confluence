@@ -4,10 +4,8 @@ from celery import shared_task
 from confluence.settings import FACEBOOK_PAGE_ACCESS_TOKEN
 import facebook
 
-
-@shared_task(name='social_media.tasks.post_to_fb_page')
-
-def post_to_fb_page(message,link):
+@shared_task(name='social_media.tasks.post_to_facebook')
+def post_to_facebook(message,link= None):
     graph = facebook.GraphAPI(access_token=FACEBOOK_PAGE_ACCESS_TOKEN)
     attachment =  {
         'link': link,   #must be same as picture

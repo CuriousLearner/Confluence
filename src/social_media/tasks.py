@@ -1,4 +1,4 @@
-'''This module is added to add various social media automated tasks.'''
+"""Contains celery tasks to post messages on various social media platforms."""
 from __future__ import absolute_import, unicode_literals
 
 # Import secret tokens from settings.
@@ -12,10 +12,18 @@ from facebook import GraphAPI
 # Create your tasks here
 @shared_task(name='social_media.tasks.post_to_facebook')
 def post_to_facebook(message, link=None):
-    ''' The follwing task is designed to post a status to facebook page. It is
-        taking message and link(optional) as parameters and post the message as
-        status to facebook page and link as an attachment, if provided.
-    '''
+    """Posts a message to the Facebook page using GraphAPI authenticated via
+       `FACEBOOK_PAGE_ACCESS_TOKEN`.
+
+       Args:
+           - message: str. The content of the message to be posted on Facebook.
+           - link: str. (Optional) Url of the attachment to be posted along
+             with message.
+
+       Returns:
+           - None
+
+    """
     graph = GraphAPI(access_token=FACEBOOK_PAGE_ACCESS_TOKEN)
     attachment = {
         'link': link,   # link to visit on clicking on the attachment.

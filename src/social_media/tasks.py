@@ -1,11 +1,9 @@
 """Contains celery tasks to post messages on various social media platforms."""
 from __future__ import absolute_import, unicode_literals
-from utils import twitter_auth
+from utils import twitter_api
 
 # Import secret tokens from settings.
 from confluence.settings import FACEBOOK_PAGE_ACCESS_TOKEN
-from confluence.settings import TWITTER_ACCESS_KEY
-from confluence.settings import TWITTER_ACCESS_SECRET
 
 # Import shared tasks
 from celery import shared_task
@@ -14,7 +12,6 @@ from celery import shared_task
 from facebook import GraphAPI
 # Import tweepy and requests for twitter posts.
 import os
-import tweepy
 import requests
 
 # Create your tasks here
@@ -57,16 +54,13 @@ def tweet_to_twitter(message, url=None):
            - None
 
     """
-    twitter_auth.set_access_token(TWITTER_ACCESS_KEY, TWITTER_ACCESS_SECRET)
-    api = tweepy.API(twitter_auth)
-
     if url is not None:
         filename = 'image.jpg'
         request = requests.get(url, stream=True)
         with open(filename, 'wb') as image:
             for chunk in request:
                 image.write(chunk)
-        api.update_with_media(filename, status=message)
+        twitter_api.update_with_media(filename, status=message)
         os.remove(filename)
     else:
-        api.update_status(message)
+        twitter_api.update_status(message)

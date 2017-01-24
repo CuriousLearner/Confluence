@@ -1,6 +1,5 @@
 """Contains celery tasks to post messages on various social media platforms."""
 from __future__ import absolute_import, unicode_literals
-from utils import twitter_api
 
 # Import secret tokens from settings.
 from confluence.settings import FACEBOOK_PAGE_ACCESS_TOKEN
@@ -10,9 +9,12 @@ from celery import shared_task
 
 # Import GraphAPI for posting attachment to facebook page.
 from facebook import GraphAPI
-# Import tweepy and requests for twitter posts.
+
+# Import twitter_api and requests for twitter post
 import os
 import requests
+from utils import twitter_api_authentication
+twitter_api = twitter_api_authentication()
 
 # Create your tasks here
 

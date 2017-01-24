@@ -6,7 +6,8 @@ from confluence.settings import TWITTER_ACCESS_SECRET
 
 import tweepy
 
-twitter_auth = tweepy.OAuthHandler(TWITTER_CONSUMER_KEY,
-                                   TWITTER_CONSUMER_SECRET)
-twitter_auth.set_access_token(TWITTER_ACCESS_KEY, TWITTER_ACCESS_SECRET)
-twitter_api = tweepy.API(twitter_auth)
+
+def twitter_api_authentication():
+    auth = tweepy.OAuthHandler(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET)
+    auth.set_access_token(TWITTER_ACCESS_KEY, TWITTER_ACCESS_SECRET)
+    return tweepy.API(auth)

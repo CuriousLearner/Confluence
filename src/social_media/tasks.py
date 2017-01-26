@@ -16,8 +16,23 @@ import requests
 from utils import twitter_api_authentication
 twitter_api = twitter_api_authentication()
 
-# Create your tasks here
 
+def save_image_from_url(image_url):
+    """ Extract a image from the image_url
+
+    Args:
+        -image_url: Url of the attachment to be posted
+
+    """
+    filename = 'image.jpg'
+    request = requests.get(image_url, stream=True)
+    with open(filename, 'wb') as image:
+        for chunk in request:
+            image.write(chunk)
+    return filename
+
+
+# Create your tasks here
 
 @shared_task(name='social_media.tasks.post_to_facebook')
 def post_to_facebook(message, link=None):
@@ -56,19 +71,6 @@ def tweet_to_twitter(message, image_url=None):
 
     """
     if image_url is not None:
-        def save_image_from_url(image_url):
-            """ Extract a image from the image_url
-
-            Args:
-                -image_url: Url of the attachment to be posted
-
-            """
-            filename = 'image.jpg'
-            request = requests.get(image_url, stream=True)
-            with open(filename, 'wb') as image:
-                for chunk in request:
-                    image.write(chunk)
-            return filename
         filename = save_image_from_url(image_url)
         twitter_api.update_with_media(filename, status=message)
         os.remove(filename)

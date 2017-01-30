@@ -4,7 +4,7 @@ from confluence.settings import TWITTER_CONSUMER_SECRET
 from confluence.settings import TWITTER_ACCESS_KEY
 from confluence.settings import TWITTER_ACCESS_SECRET
 
-#Tweepy helps in accessing Twitter via Basic Authentication and OAuth
+# Tweepy helps in accessing Twitter via Basic Authentication and OAuth
 import tweepy
 
 

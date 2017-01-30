@@ -18,11 +18,12 @@ twitter_api = twitter_api_authentication()
 
 
 def save_image_from_url(image_url):
-    """ Extract a image from the image_url
+    """Extract a image from the image_url
 
-    Args:
-        -image_url: Url of the attachment to be posted
-
+       Args:
+           - image_url: Url of the attachment to be posted.
+       Returns:
+           - filename: Image saved in a file.
     """
     filename = 'image.jpg'
     request = requests.get(image_url, stream=True)
@@ -39,7 +40,7 @@ def post_to_facebook(message, link=None):
     """Posts a message to the Facebook page using GraphAPI authenticated via
        `FACEBOOK_PAGE_ACCESS_TOKEN`.
 
-       Args:
+    Args:
            - message: str. The content of the message to be posted on Facebook.
            - link: str. (Optional) Url of the attachment to be posted along
              with message.
@@ -58,16 +59,16 @@ def post_to_facebook(message, link=None):
 
 @shared_task(name='social_media.tasks.tweet_to_twitter')
 def tweet_to_twitter(message, image_url=None):
-    """ Posts a message to the Twitter page using twitter_api, an instance for
-        twitter_api_authentication imported from utility.
+    """Posts a message to the Twitter page using twitter_api, an instance for
+       twitter_api_authentication imported from utility.
 
-        Args:
-            - message: str. The content of the message to be posted on Twitter.
-            - image_url: (Optional) Url of the attachment to be posted along
+       Args:
+           - message: str. The content of the message to be posted on Twitter.
+           - image_url: (Optional) Url of the attachment to be posted along
               with message.
 
-        Returns:
-            - None
+       Returns:
+           - None
 
     """
     if image_url is not None:

@@ -24,6 +24,7 @@ def save_image_from_url(image_url):
            - image_url: Url of the attachment to be posted.
        Returns:
            - filename: Image saved in a file.
+
     """
     filename = 'image.jpg'
     request = requests.get(image_url, stream=True)
@@ -40,7 +41,7 @@ def post_to_facebook(message, link=None):
     """Posts a message to the Facebook page using GraphAPI authenticated via
        `FACEBOOK_PAGE_ACCESS_TOKEN`.
 
-    Args:
+       Args:
            - message: str. The content of the message to be posted on Facebook.
            - link: str. (Optional) Url of the attachment to be posted along
              with message.

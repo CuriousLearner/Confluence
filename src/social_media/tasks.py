@@ -13,7 +13,7 @@ from facebook import GraphAPI
 # Import twitter_api and requests for twitter post
 import os
 import requests
-from utils import twitter_api_authentication
+from .utils import twitter_api_authentication
 twitter_api = twitter_api_authentication()
 
 

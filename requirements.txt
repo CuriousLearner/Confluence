@@ -6,6 +6,7 @@ django-celery-results==1.0.1
 django-environ==0.4.1
 django-filter==1.0.1
 djangorestframework==3.5.3
+django-uuid-upload-path==1.0.0
 facebook-sdk==2.0.0
 kombu==4.0.2
 Markdown==2.6.7

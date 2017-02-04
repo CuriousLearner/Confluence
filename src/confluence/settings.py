@@ -14,15 +14,6 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 import os
 import environ
 
-# Celery settings
-CELERY_BROKER_URL = 'amqp://guest:guest@localhost//'
-
-#: Only add pickle to this list if your broker is secured
-#: from unwanted access (see userguide/security.html)
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_RESULT_BACKEND = 'django-db'
-CELERY_TASK_SERIALIZER = 'json'
-
 
 root = environ.Path(__file__) - 3  # three folder back (/a/b/c/ - 3 = /)
 env = environ.Env(DEBUG=(bool, False),)  # set default values and casting
@@ -43,9 +34,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('SECRET_KEY')
-
-# FACEBOOK PAGE ACCESS TOKEN
-FACEBOOK_PAGE_ACCESS_TOKEN = env('FACEBOOK_PAGE_ACCESS_TOKEN')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG', default=True)
@@ -151,3 +139,26 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# Application specific secrets goes here
+
+# Celery settings
+CELERY_BROKER_URL = 'amqp://guest:guest@localhost//'
+
+#: Only add pickle to this list if your broker is secured
+#: from unwanted access (see userguide/security.html)
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_TASK_SERIALIZER = 'json'
+
+# Registration App specific settings
+EXPLARA_API_KEY = env('EXPLARA_API_KEY')
+EXPLARA_ATTENDEE_LIST_URL = 'https://www.explara.com/api/e/attendee-list'
+
+# Social Media App specific settings
+
+# Access token for Facebook page
+FACEBOOK_PAGE_ACCESS_TOKEN = env('FACEBOOK_PAGE_ACCESS_TOKEN')
+
+

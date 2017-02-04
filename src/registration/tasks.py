@@ -8,7 +8,7 @@ from celery import shared_task
 
 from .models import User
 from .utils import call_explara_and_fetch_data, process_explara_data_and_populate_db
-
+from .utils import call_meetup_and_fetch_data, process_meetup_data_and_populate_db
 
 @shared_task(name='registration.tasks.sync_database_with_explara')
 def sync_database_with_explara(EXPLARA_EVENT_ID):
@@ -44,3 +44,32 @@ def sync_database_with_explara(EXPLARA_EVENT_ID):
         attendee_order_list = data['attendee']
 
         process_explara_data_and_populate_db(attendee_order_list)
+
+
+@shared_task(name='registration.tasks.rsvp_from_meetup')
+def get_rsvp_from_meetup(MEETUP_EVENT_ID):
+    """
+      Gets the rsvp list from meetup.com for a particular event.
+    
+    Reference meetup doc :
+      - https://www.meetup.com/meetup_api/docs/2/rsvps/
+    
+    Args:
+      - MEETUP_EVENT_ID : str. Event id of the group's event. 
+
+    Returns:
+      - None
+    """
+
+    # The event id is hardcoded for now. 
+    # The api doc says events are paginated
+
+    data = call_meetup_and_fetch_data(MEETUP_EVENT_ID)
+    
+    if data["status"] != "success":
+        print("Could not fetch data from meetup")
+        print(data)
+
+    meetup_rsvp_list = data["results"]
+    
+    process_meetup_data_and_populate_db(meetup_rsvp_list)

@@ -156,6 +156,11 @@ CELERY_TASK_SERIALIZER = 'json'
 EXPLARA_API_KEY = env('EXPLARA_API_KEY')
 EXPLARA_ATTENDEE_LIST_URL = 'https://www.explara.com/api/e/attendee-list'
 
+## Meetup 
+MEETUP_API_KEY = env('MEETUP_API_KEY')
+MEETUP_RSVP_URL = 'https://api.meetup.com/2/rsvps'
+
+
 # Social Media App specific settings
 
 # Access token for Facebook page

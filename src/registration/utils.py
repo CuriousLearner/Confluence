@@ -1,6 +1,7 @@
 import requests
 
 from confluence.settings import EXPLARA_API_KEY, EXPLARA_ATTENDEE_LIST_URL
+from confluence.settings import MEETUP_API_KEY, MEETUP_RSVP_URL
 from .models import User
 
 
@@ -83,3 +84,67 @@ def process_explara_data_and_populate_db(attendee_order_list):
                 print("Ticket details for failed user creation entry: ")
                 print(ticket)
                 continue
+
+
+def call_meetup_and_fetch_data(MEETUP_EVENT_ID):
+    """
+    GETs all the meetup rsvp's for a particular event.
+    
+    Args:
+      - MEETUP_EVENT_ID: str. Event ID for the Explara event.
+
+    Returns:
+      - meetup_rsvp_list data: dict. Response in JSON format as fetched from Meetup.
+    """
+    headers = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': "Bearer %s" % MEETUP_API_KEY
+    }
+
+    payload = {
+        'event_id': MEETUP_EVENT_ID,
+        'rsvp' : 'yes'
+    }
+
+    response = requests.post(
+        MEETUP_RSVP_URL,
+        data=payload,
+        headers=headers
+    )
+
+    return response.json()
+
+
+def process_meetup_data_and_populate_db(meetup_rsvp_list):
+    """
+    Syncs the rsvp list with meetup
+
+    Args:
+      - meetup_rscp_list : list.
+
+    Returns:
+      - None
+    """
+    
+    for rsvp in meetup_rsvp_list:
+        members = rsvp['member']
+        for member in members:
+            try:
+                member_id, member_name = member['member_id'], member_name
+                name_list = member_name.split(' ')
+                first_name, last_name = name_list[0], name_list[-1]
+            except KeyError as e:
+                print("Error decoding data") 
+                print(e)
+                continue
+            try:
+                User.objects.create(
+                    member_id=member_id,
+                    first_name=first_name,
+                    last_name=last_name
+                )
+            except Exception as e:
+                print("Cannot create User %s because: ", member_name)
+                print(str(e))
+                continue
+    

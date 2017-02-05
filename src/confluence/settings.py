@@ -140,6 +140,36 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# Settings related to Logging goes below
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler'
+        },
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'django_debug.log'
+        },
+    },
+    'loggers': {
+        'registration': {
+            'handlers': ['console', 'file'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+            'formatter': 'verbose',
+            'propagate': True,
+        },
+    },
+}
+
 
 # Application specific secrets goes here
 

@@ -3,11 +3,15 @@ ticketing platforms."""
 
 from __future__ import absolute_import, unicode_literals
 
+import logging
+
 from django.db.models import Max
 from celery import shared_task
 
 from .models import User
 from .utils import call_explara_and_fetch_data, process_explara_data_and_populate_db
+
+logger = logging.getLogger(__name__)
 
 
 @shared_task(name='registration.tasks.sync_database_with_explara')
@@ -33,12 +37,12 @@ def sync_database_with_explara(EXPLARA_EVENT_ID):
         data = call_explara_and_fetch_data(EXPLARA_EVENT_ID, max_ticket_id)
 
         if data["status"] != 'success':
-            print("Error from explara: ")
-            print(data)
+            logger.error("Error from explara: ")
+            logger.error(data)
             break
 
         if not data["attendee"]:
-            print("No attendees left now")
+            logger.info("No attendees left now")
             break
 
         attendee_order_list = data['attendee']

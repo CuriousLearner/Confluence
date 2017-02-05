@@ -1,7 +1,11 @@
 import requests
+import logging
 
 from confluence.settings import EXPLARA_API_KEY, EXPLARA_ATTENDEE_LIST_URL
 from .models import User
+
+
+logger = logging.getLogger(__name__)
 
 
 def call_explara_and_fetch_data(EXPLARA_EVENT_ID, max_ticket_id):
@@ -49,37 +53,31 @@ def process_explara_data_and_populate_db(attendee_order_list):
     for order in attendee_order_list:
         tickets = order['attendee']
         for ticket in tickets:
-            print(ticket)
+            logger.info("Processing Ticket: " + str(ticket))
+            user_data = {}
             try:
-                name, email = ticket['name'], ticket['email']
-                ticket_no = ticket['ticketNo']
-                name_list = name.split(' ')
-                first_name, last_name = name_list[0], name_list[-1]
-                username = 'explara' + str(ticket_no)
-                tshirt_size = ticket['details']['T-shirt size']
-                contact_no = ticket['details']['Contact Number']
-                if len(contact_no) > 10:
-                    contact_no = contact_no[1:]
+                user_data['email'] = ticket['email']
+                user_data['ticket_id'] = ticket['ticketNo']
+                name_list = ticket['name'].title().split()
+                user_data['first_name'] = name_list[0].title()
+                user_data['last_name'] = ' '.join(name_list[1:])
+                # username is intentionally kept as ticket_no so there
+                # aren't any chances of DB integrity error of failing UNIQUE
+                # constraint on username
+                user_data['username'] = 'explara_' + str(user_data['ticket_id'])
+                user_data['tshirt_size'] = ticket['details']['T-shirt size']
+                user_data['contact'] = ticket['details']['Contact Number']
             except KeyError as e:
-                print("Error in decoding data")
-                print(e)
+                logger.warning("Error in decoding data: " + str(e))
+                logger.warning("Ticket information " + str(ticket))
                 continue
 
-            # username is intentionally kept as ticket_no so there
-            # aren't any chances of DB integrity error of failing UNIQUE
-            # constraint on username
-            try:
-                User.objects.create(
-                    username=username,
-                    first_name=first_name,
-                    last_name=last_name,
-                    email=email,
-                    ticket_id=ticket_no,
-                    tshirt_size=tshirt_size,
-                    contact=contact_no
-                )
-            except Exception as e:
-                print("Cannot create User because: " + str(e))
-                print("Ticket details for failed user creation entry: ")
-                print(ticket)
-                continue
+            create_user_in_db(**user_data)
+
+
+def create_user_in_db(**kwargs):
+    try:
+        User.objects.create(**kwargs)
+    except Exception as e:
+        logger.error("Cannot create User because: " + str(e))
+

@@ -147,24 +147,29 @@ LOGGING = {
     'disable_existing_loggers': False,
     'formatters': {
         'verbose': {
-            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+            'format': 'Level: %(levelname)s '
+                      '%(asctime)s '
+                      'Process: %(process)d '
+                      'Thread: %(thread)d: '
+                      '%(message)s'
         },
     },
     'handlers': {
         'console': {
-            'class': 'logging.StreamHandler'
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
         },
         'file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': 'django_debug.log'
+            'filename': 'django_debug.log',
+            'formatter': 'verbose'
         },
     },
     'loggers': {
         'registration': {
             'handlers': ['console', 'file'],
             'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
-            'formatter': 'verbose',
             'propagate': True,
         },
     },

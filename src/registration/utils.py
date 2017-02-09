@@ -54,7 +54,7 @@ def process_explara_data_and_populate_db(attendee_order_list):
         tickets = order['attendee']
         for ticket in tickets:
             logger.info("Processing Ticket: " + str(ticket))
-            user_data = {}
+            user_data = {"ticketing_platform": "E"}
             try:
                 user_data['email'] = ticket['email']
                 user_data['ticket_id'] = ticket['ticketNo']

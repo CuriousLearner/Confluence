@@ -2,7 +2,6 @@
 from __future__ import absolute_import, unicode_literals
 import os
 
-import os
 
 # Import secret tokens from settings.
 from confluence.settings import FACEBOOK_PAGE_ACCESS_TOKEN
@@ -77,6 +76,9 @@ def tweet_to_twitter(message, image_url=None):
     if image_url is not None:
         filename = save_image_from_url(image_url)
         twitter_api.update_with_media(filename, status=message)
-        os.remove(filename)
+        try:
+            os.remove(filename)
+        except OSError:
+            pass
     else:
         twitter_api.update_status(message)

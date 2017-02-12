@@ -58,10 +58,14 @@ class PostAdmin(admin.ModelAdmin):
             self.set_attr_if_not_set(obj, 'status', 'H')
 
         self.set_attr_if_not_set(obj, 'created_by', request.user)
-        self.set_attr_if_not_set(obj, 'created_at', request.user)
+        self.set_attr_if_not_set(obj, 'created_at', datetime.datetime.now())
         obj.save()
 
     def formfield_for_choice_field(self, db_field, request=None, **kwargs):
+        """
+        Returns the choices for all choice field. It prevents the user to set the status as 'POSTED'
+        (by not showing that option).
+        """
         if db_field.name == 'status':
             kwargs['choices'] = self.get_required_choices(db_field.choices,
                                                           choices_not_required_set={('P', 'POSTED')})

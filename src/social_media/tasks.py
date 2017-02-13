@@ -1,6 +1,7 @@
 """Contains celery tasks to post messages on various social media platforms."""
 from __future__ import absolute_import, unicode_literals
-import os
+
+import uuid
 
 
 # Import secret tokens from settings.
@@ -27,7 +28,8 @@ def save_image_from_url(image_url):
            - filename: Image saved in a file.
 
     """
-    filename = 'image.jpg'
+    fextn = image_url.rsplit('.')[-1]
+    filename = uuid.uuid4().hex + '.' + fextn
     request = requests.get(image_url, stream=True)
     with open(filename, 'wb') as image:
         for chunk in request:
@@ -76,9 +78,5 @@ def tweet_to_twitter(message, image_url=None):
     if image_url is not None:
         filename = save_image_from_url(image_url)
         twitter_api.update_with_media(filename, status=message)
-        try:
-            os.remove(filename)
-        except OSError:
-            pass
     else:
         twitter_api.update_status(message)

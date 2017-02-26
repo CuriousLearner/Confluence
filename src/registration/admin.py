@@ -8,6 +8,7 @@ from .models import User, UserAttendance
 
 class CustomUserAdmin(UserAdmin):
     list_display = [field.name for field in User._meta.fields]
+    fieldsets = ()
 
 
 class UserAttendanceAdmin(admin.ModelAdmin):

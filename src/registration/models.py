@@ -38,7 +38,7 @@ class User(AbstractUser):
 
 class UserAttendance(models.Model):
     user = models.ForeignKey(User)
-    attended_on = models.DateField()
+    attended_on = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return str(self.user) + " Attended On: " + str(self.attended_on)

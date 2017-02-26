@@ -208,4 +208,4 @@ TICKET_PALTFORM_CHOICES = (
 )
 
 TICKET_PALTFORM_CHOICES_REVERSED = {v: k for k, v in
-                                    dict(TICKET_PALTFORM_CHOICES).iteritems()}
+                                    dict(TICKET_PALTFORM_CHOICES).items()}

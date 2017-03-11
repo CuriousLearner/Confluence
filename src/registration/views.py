@@ -1,13 +1,12 @@
-import datetime
 import logging
 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import User, UserAttendance
+from registration.utils import get_attendance_for_user
+from registration.models import User
 
 from confluence.settings import TICKET_PALTFORM_CHOICES_REVERSED
-
 
 logger = logging.getLogger(__name__)
 
@@ -27,18 +26,3 @@ def mark_attendance(request, ticketing_platform):
     attendance, message = get_attendance_for_user(user)
     logger.info(attendance)
     return JsonResponse({"message": message}, status=200)
-
-
-def get_attendance_for_user(user):
-    """ Get or create the attendance object for user and return the
-    respective message.
-    """
-    now = datetime.datetime.today()
-    attendance, created = UserAttendance.objects.get_or_create(
-        user=user, attended_on=now
-    )
-    if created:
-        message = "attendance marked for today"
-    else:
-        message = "attendance already marked for today."
-    return attendance, message

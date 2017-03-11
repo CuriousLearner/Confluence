@@ -3,8 +3,8 @@ import logging
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from registration.utils import get_attendance_for_user
-from registration.models import User
+from .utils import get_attendance_for_user
+from .models import User
 
 from confluence.settings import TICKET_PALTFORM_CHOICES_REVERSED
 

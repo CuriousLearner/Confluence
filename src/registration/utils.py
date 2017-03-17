@@ -1,6 +1,7 @@
 import datetime
 import requests
 import logging
+import pandas as pd
 
 from confluence.settings import EXPLARA_API_KEY, EXPLARA_ATTENDEE_LIST_URL
 from .models import User, UserAttendance
@@ -73,6 +74,24 @@ def process_explara_data_and_populate_db(attendee_order_list):
                 continue
 
             create_user_in_db(**user_data)
+
+
+def save_explara_users_from_csv_to_db(csv_file):
+    attendee_df = pd.read_csv(csv_file)
+    user_data = {"ticketing_platform": "E"}
+    for _, row in attendee_df.iterrows():
+        name_list = row.get('name').split()
+        user_data['first_name'] = name_list[0]
+        user_data['last_name'] = ' '.join(name_list[1:])
+        user_data['ticket_id'] = row.get('ticket_id')
+        user_data['username'] = 'explara_' + str(user_data['ticket_id'])
+        user_data['contact'] = row.get('contact')
+        user_data['email'] = row.get('email')
+        try:
+            create_user_in_db(**user_data)
+            logger.info("Created user: {}".format(user_data['ticket_id']))
+        except Exception as e:
+            logger.warning("Couldn't create user: {}".format(user_data))
 
 
 def create_user_in_db(**kwargs):

@@ -67,6 +67,14 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
+#### Create Superuser to access admin panel
+Once your server starts successfully, run the following command to create a superuser for accessing admin,
+
+```
+python manage.py createsuperuser
+```
+Fill up the details on prompt.
+
 #### Run Server 
 Once all above setup is done, run the following code to start your development server,
 ```
@@ -74,3 +82,7 @@ python manage.py runserver
 ```
 
 On successful setup you will a line stating ' Starting Development Server at http://127.0.0.1:8000/ '. Visit http://localhost:8000 url on your web browser to see your project in action.
+You can stop the server by pressing CTRL+C
+
+
+All Ready! You can now access admin at http://localhost:8000/admin/

@@ -4,7 +4,11 @@ This is Confluence of Conference.
 # Setup Guide
 
 ### Creating a Virtual Environment
-Virtual Environment allows us to have requirements installed specifically to our project instead of complete system. To create a virtual environment goto any directory where you will store your code and run the following command on terminal (linux) or Windows PowerShell (Windows)(For windows, run Windows Powershell as Administrator before running below commands)
+Virtual Environment allows us to have requirements installed specifically to our
+project instead of complete system. To create a virtual environment go to any directory
+where you will store your code and run the following command on terminal (linux)
+or Windows PowerShell (Windows)(For windows, run Windows Powershell as Administrator
+before running below commands)
 ```
 python -m venv venvconf
 ```
@@ -27,24 +31,28 @@ git clone https://github.com/<github_username>/Confluence
 ```
 git checkout develop
 ```
-Development does not happen on develop branch. It would happen on a feature branch and PRs would be created from feature branch on their fork to the develop branch of this project.
+Checkout a new branch everytime you work on adding a new feature to the project.
 
-Understand this, as, if many people are working on develop branch in their fork they have to continually rebase to get latest code and place their code on top of it (and solving merge conflicts).
-
-We prefer solving merge conflicts when a single feature is complete (and also would be squashed to a single commit on develop branch)
+We prefer solving merge conflicts when a single feature is complete (and also
+would be squashed to a single commit on develop branch)
 
 #### Installing Project Requirements (First Time Only or on Requirement changes)
 Change directory to project directory 
 ```
 cd confluence
 ```
-Use pip to install  missing requirements: (if you don't have pip installed on your system, google how to install) (Windows Users should run this command Adminsitrator Shell or will get error)
+Use pip to install  missing requirements: (if you don't have pip installed on your
+system, google how to install) (Windows Users should run this command Adminsitrator
+Shell or will get error)
 ```
 pip install -r requirements.txt
 ```
 #### Creating Environment Variables File
-Change directory to src/confluence to create a ".env" file that will contain your enviroment variables.
-**Note:** ".env" does not get included in git. That is the whole point of keeping settings as environment variables (because we want to prevent including confidential information on git tree)
+Change directory to src/confluence to create a ".env" file that will contain your
+enviroment variables.
+**Note:** ".env" does not get included in git. That is the whole point of keeping
+settings as environment variables (because we want to prevent including confidential
+information on git tree)
 ```
 cd src\confluence
 ```
@@ -68,7 +76,8 @@ python manage.py migrate
 ```
 
 #### Create Superuser to access admin panel
-Once your server starts successfully, run the following command to create a superuser for accessing admin,
+Once your server starts successfully, run the following command to create a superuser
+for accessing admin,
 
 ```
 python manage.py createsuperuser
@@ -81,7 +90,8 @@ Once all above setup is done, run the following code to start your development s
 python manage.py runserver
 ```
 
-On successful setup you will a line stating ' Starting Development Server at http://127.0.0.1:8000/ '. Visit http://localhost:8000 url on your web browser to see your project in action.
+On successful setup you will a line stating ' Starting Development Server at http://127.0.0.1:8000/ '.
+Visit http://localhost:8000 url on your web browser to see your project in action.
 You can stop the server by pressing CTRL+C
 
 
